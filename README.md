@@ -43,6 +43,8 @@ Kurumsal sitede eklenen özgün lacivert/mavi görsel tasarım `src/app/site-des
 
 Public sayfaların SEO başlıkları ve arama açıklamaları CMS **Site Ayarları** bölümünden yönetilir. `/robots.txt` ve `/sitemap.xml` Next.js tarafından üretilir. Yayında Search Console'a `https://durmazkardeslerinsaat.com` domainini ekleyip sitemap'i `https://durmazkardeslerinsaat.com/sitemap.xml` adresinden göndermek gerekir. Canonical ve sitemap domain'i `src/presentation/utils/seo-metadata.ts` içinde yapılandırılmıştır.
 
+CMS proje kayıtlarında proje başına en fazla 10 görsel bulunabilir. İlk görsel kapak olarak kullanılır; proje kartlarındaki gezinme kontrolleriyle diğer görseller görüntülenebilir. `.data/` ve `public/uploads/` klasörleri içerik ve görselleri kalıcı olarak sakladığından yedeklenmelidir.
+
 ### Yayın ortamı gereksinimleri
 
 CMS, Node.js sunucu ortamında yazılabilir `.data/site-content.json` dosyası ve görseller için yazılabilir `public/uploads/` dizini kullanır. Verilerin korunması için:

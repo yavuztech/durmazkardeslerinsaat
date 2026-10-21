@@ -33,12 +33,19 @@ async function readContent(): Promise<CmsContent> {
           service.id !== "helikopterli-sap" &&
           !service.title.toLocaleLowerCase("tr-TR").includes("helikopterli şap"),
       ),
-      projects: (saved.projects ?? defaultContent.projects).filter(
-        (project) =>
-          !`${project.category} ${project.title} ${project.description}`
-            .toLocaleLowerCase("tr-TR")
-            .includes("helikopterli şap"),
-      ),
+      projects: (saved.projects ?? defaultContent.projects)
+        .filter(
+          (project) =>
+            !`${project.category} ${project.title} ${project.description}`
+              .toLocaleLowerCase("tr-TR")
+              .includes("helikopterli şap"),
+        )
+        .map((project) => ({
+          ...project,
+          images: Array.isArray(project.images) && project.images.length > 0
+            ? project.images
+            : [project.image],
+        })),
       settings: {
         ...defaultContent.settings,
         ...saved.settings,

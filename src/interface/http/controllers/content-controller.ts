@@ -55,6 +55,11 @@ function validItems<K extends Exclude<Collection, "settings">>(
         !isBoundedText(item.location, 100, true) ||
         !isBoundedText(item.description, 800, true) ||
         !validImage(item.image) ||
+        !Array.isArray(item.images) ||
+        item.images.length < 1 ||
+        item.images.length > 10 ||
+        !item.images.every(validImage) ||
+        item.image !== item.images[0] ||
         !projectStatuses.includes(String(item.status)) ||
         typeof item.active !== "boolean")) return false;
     if (collection === "services" &&

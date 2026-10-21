@@ -133,6 +133,17 @@ export const Field = styled.label<{ $full?: boolean }>`
   span{color:#718293;font-weight:400}
 `;
 export const ModalActions = styled.div`display:flex;justify-content:flex-end;gap:8px;padding-top:8px`;
+export const ImageGallery = styled.div`
+  grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px;margin:0 0 14px;
+`;
+export const GalleryImage = styled.div`
+  min-width:0;border:1px solid #dce3e8;background:#f8fafb;padding:6px;
+  img{display:block;width:100%;height:76px;object-fit:cover;background:#eaf0f4}
+  div{display:flex;gap:5px;margin-top:6px}
+  button{flex:1;min-width:0;min-height:28px;padding:3px;border:1px solid #cbd6df;background:#fff;color:#062c4d;font-size:9px;cursor:pointer}
+  button:focus-visible{outline:2px solid #087bff;outline-offset:1px}
+  small{display:block;color:#0056b3;font-size:9px;margin-top:5px}
+`;
 export const ErrorMessage = styled.p`padding:10px 12px;background:#fff0ed;border-left:2px solid #b42318;color:#8a1c13;font-size:11px;line-height:1.5`;
 export const SettingGrid = styled.div`display:grid;grid-template-columns:1fr 1fr;gap:14px;@media(max-width:700px){grid-template-columns:1fr}`;
 export const SettingsForm = styled.form`display:contents;`;

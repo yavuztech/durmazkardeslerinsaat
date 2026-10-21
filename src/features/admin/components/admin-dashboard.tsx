@@ -27,8 +27,10 @@ import {
   Eyebrow,
   Field,
   FormGrid,
+  GalleryImage,
   GlobalStyle,
   Heading,
+  ImageGallery,
   InlineActions,
   Layout,
   Main,
@@ -69,9 +71,11 @@ export default function AdminDashboard() {
     content, error, loading, uploading, section, setSection, editor, setEditor,
     feedback, setFeedback, editorForm, settingsForm, inquiries, recentInquiries,
     weekCounts, newInquiryCount, refreshContent, logout, openEditor, saveEditor,
-    deleteItem, uploadImage, updateInquiry, deleteInquiry, saveSettings,
+    deleteItem, uploadImage, uploadProjectImages, updateInquiry, deleteInquiry, saveSettings,
   } = useAdminDashboard();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [projectImageUrl, setProjectImageUrl] = useState("");
+  const projectImages = editorForm.watch("images") ?? [];
   const current = adminSectionContent[section];
   const newInquiries = newInquiryCount;
   const projectCount = content?.projects.length ?? 0;
@@ -98,6 +102,44 @@ export default function AdminDashboard() {
       },
     },
   };
+
+  function openContentEditor(type: "projects" | "services", item?: Parameters<typeof openEditor>[1]) {
+    setProjectImageUrl("");
+    openEditor(type, item);
+  }
+
+  function setProjectGallery(images: string[]) {
+    editorForm.setValue("images", images, { shouldValidate: true });
+    editorForm.setValue("image", images[0] ?? "", { shouldValidate: true });
+  }
+
+  function addProjectImageUrl() {
+    const imageUrl = projectImageUrl.trim();
+    try {
+      if (imageUrl.length > 2048) {
+        throw new Error("Image URL is too long");
+      }
+      if (!/^\/uploads\/[a-z\d-]+\.(?:jpg|png|webp)$/i.test(imageUrl)) {
+        const parsedUrl = new URL(imageUrl);
+        if (parsedUrl.protocol !== "http:" && parsedUrl.protocol !== "https:") {
+          throw new Error("Unsupported image URL protocol");
+        }
+      }
+      if (projectImages.length >= 10) {
+        setFeedback("Bir projeye en fazla 10 görsel ekleyebilirsiniz.");
+        return;
+      }
+      if (projectImages.includes(imageUrl)) {
+        setFeedback("Bu görsel galeriye zaten eklenmiş.");
+        return;
+      }
+      setProjectGallery([...projectImages, imageUrl]);
+      setProjectImageUrl("");
+      setFeedback("");
+    } catch {
+      setFeedback("Geçerli bir https:// veya http:// görsel adresi girin.");
+    }
+  }
 
   return (
     <>
@@ -142,7 +184,7 @@ export default function AdminDashboard() {
             <Topbar><span>Durmaz Kardeşler Yapı İnşaat　/　{current.title}</span><Button $quiet type="button" onClick={() => void logout()}>Güvenli çıkış ↗</Button></Topbar>
             <Heading>
               <div><h1>{current.title}</h1><p>{current.description}</p></div>
-              {(section === "projects" || section === "services") && <Button type="button" onClick={() => openEditor(section)}>＋ Yeni {section === "projects" ? "proje" : "hizmet"} ekle</Button>}
+              {(section === "projects" || section === "services") && <Button type="button" onClick={() => openContentEditor(section)}>＋ Yeni {section === "projects" ? "proje" : "hizmet"} ekle</Button>}
               {section === "inquiries" && <Button $quiet type="button" disabled={loading} onClick={() => void refreshContent()}>{loading ? "Yükleniyor…" : "↻ Yenile"}</Button>}
             </Heading>
             {(error || feedback) && <ErrorMessage role="status">{feedback || error}</ErrorMessage>}
@@ -169,7 +211,7 @@ export default function AdminDashboard() {
             {section === "projects" && (
               <ProjectList
                 projects={content?.projects ?? []}
-                onEdit={(project) => openEditor("projects", project)}
+                onEdit={(project) => openContentEditor("projects", project)}
                 onDelete={(id) => void deleteItem("projects", id)}
               />
             )}
@@ -177,7 +219,7 @@ export default function AdminDashboard() {
             {section === "services" && (
               <ServiceList
                 services={content?.services ?? []}
-                onEdit={(service) => openEditor("services", service)}
+                onEdit={(service) => openContentEditor("services", service)}
                 onDelete={(id) => void deleteItem("services", id)}
               />
             )}
@@ -279,7 +321,20 @@ export default function AdminDashboard() {
                       ))}
                     </select></Field>
                     <Field>Konum<input {...editorForm.register("location", { required: true, maxLength: 100 })} placeholder="Bursa" /></Field>
-                    <Field $full>Proje görseli <span>(JPG, PNG veya WebP · en fazla 4 MB)</span><input type="file" accept="image/jpeg,image/png,image/webp" disabled={uploading} onChange={(event) => void uploadImage(event.target.files?.[0])} /><input type="url" placeholder="veya görsel URL'si" {...editorForm.register("image", { required: "Proje görseli zorunludur." })} />{uploading && <span>Görsel yükleniyor…</span>}</Field>
+                    <Field $full>Görsel ekle <span>(JPG, PNG veya WebP · görsel başına en fazla 4 MB, toplam 10 görsel)</span><input type="file" accept="image/jpeg,image/png,image/webp" multiple disabled={uploading || projectImages.length >= 10} onChange={(event) => { void uploadProjectImages(event.target.files); event.currentTarget.value = ""; }} />{uploading && <span>Görseller yükleniyor…</span>}</Field>
+                    <Field $full>Görsel URL’si<input type="url" value={projectImageUrl} onChange={(event) => setProjectImageUrl(event.target.value)} placeholder="https://..." /><Button type="button" $quiet disabled={!projectImageUrl.trim()} onClick={addProjectImageUrl}>URL’yi galeriye ekle</Button></Field>
+                    <ImageGallery role="group" aria-label="Proje görsel galerisi">
+                      {projectImages.map((image, index) => (
+                        <GalleryImage key={`${image}-${index}`}>
+                          <img src={image} alt={`${editorForm.getValues("title") || "Proje"} görseli ${index + 1}`} />
+                          {index === 0 && <small>Kapak görseli</small>}
+                          <div>
+                            {index > 0 && <button type="button" onClick={() => setProjectGallery([image, ...projectImages.filter((_, imageIndex) => imageIndex !== index)])}>Kapak yap</button>}
+                            {projectImages.length > 1 && <button type="button" aria-label={`${index + 1}. görseli kaldır`} onClick={() => setProjectGallery(projectImages.filter((_, imageIndex) => imageIndex !== index))}>Kaldır</button>}
+                          </div>
+                        </GalleryImage>
+                      ))}
+                    </ImageGallery>
                     <Field>Durum<select {...editorForm.register("status")}><option value="completed">Tamamlandı</option><option value="ongoing">Devam ediyor</option></select></Field>
                   </>
                 ) : <Field>Simge <span>(kısa metin ya da sembol)</span><input {...editorForm.register("icon", { maxLength: 5 })} /></Field>}

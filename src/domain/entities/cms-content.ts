@@ -12,6 +12,7 @@ export type Project = {
   category: string;
   location: string;
   image: string;
+  images: string[];
   description: string;
   status: "completed" | "ongoing";
   active: boolean;

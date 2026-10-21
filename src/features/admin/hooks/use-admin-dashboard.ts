@@ -121,12 +121,17 @@ export function useAdminDashboard() {
     try {
       const id = editor.id ?? crypto.randomUUID();
       if (editor.type === "projects") {
+        if (values.images.length === 0) {
+          setFeedback("Projeye en az bir görsel ekleyin.");
+          return;
+        }
         const project: Project = {
           id,
           title: values.title.trim(),
           category: values.category.trim(),
           location: values.location.trim(),
-          image: values.image.trim(),
+          image: values.images[0]?.trim() ?? values.image.trim(),
+          images: values.images.map((image) => image.trim()),
           description: values.description.trim(),
           status: values.status,
           active: values.active,
@@ -185,6 +190,33 @@ export function useAdminDashboard() {
     }
   }
 
+  async function uploadProjectImages(files: FileList | null) {
+    if (!files?.length) return;
+    const selectedFiles = Array.from(files);
+    const existingImages = editorForm.getValues("images");
+    if (selectedFiles.some((file) => !validateCmsImageFile(file))) {
+      setFeedback("Her görsel JPG, PNG veya WebP biçiminde ve en fazla 4 MB olmalıdır.");
+      return;
+    }
+    if (existingImages.length + selectedFiles.length > 10) {
+      setFeedback("Bir projeye en fazla 10 görsel ekleyebilirsiniz.");
+      return;
+    }
+
+    setFeedback("");
+    try {
+      const uploadedImages: string[] = [];
+      for (const file of selectedFiles) {
+        uploadedImages.push(await dispatch(uploadAdminImage(file)).unwrap());
+      }
+      const images = [...existingImages, ...uploadedImages];
+      editorForm.setValue("images", images, { shouldValidate: true });
+      editorForm.setValue("image", images[0] ?? "", { shouldValidate: true });
+    } catch (requestError) {
+      setFeedback(getAdminActionError(requestError, "Görseller yüklenemedi."));
+    }
+  }
+
   async function updateInquiry(inquiry: Inquiry, status: Inquiry["status"]) {
     if (!content) return;
     try {
@@ -236,6 +268,7 @@ export function useAdminDashboard() {
     saveEditor,
     deleteItem,
     uploadImage,
+    uploadProjectImages,
     updateInquiry,
     deleteInquiry,
     saveSettings,

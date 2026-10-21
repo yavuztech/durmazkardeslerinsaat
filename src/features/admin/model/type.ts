@@ -7,6 +7,7 @@ export type AdminEditorValues = {
   category: string;
   location: string;
   image: string;
+  images: string[];
   description: string;
   icon: string;
   status: "completed" | "ongoing";

@@ -39,9 +39,6 @@ export function ServicesSection({
                 <h3>{service.title}</h3>
                 <p>{service.description}</p>
               </div>
-              <a className="round-arrow" href={`/hizmetlerimiz#hizmet-${service.id}`} aria-label={`${service.title} hizmet detayına gidin`}>
-                <span aria-hidden="true">↗</span>
-              </a>
             </article>
           ))}
         </div>

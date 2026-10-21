@@ -43,6 +43,9 @@ export const defaultContent: CmsContent = {
       location: "Bursa",
       image:
         "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1000&q=85",
+      images: [
+        "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1000&q=85",
+      ],
       description: "Endüstriyel tesis için dayanıklı beton zemin uygulaması.",
       status: "completed",
       active: true,
@@ -54,6 +57,9 @@ export const defaultContent: CmsContent = {
       location: "Bursa ve çevresi",
       image:
         "https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?auto=format&fit=crop&w=1000&q=85",
+      images: [
+        "https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?auto=format&fit=crop&w=1000&q=85",
+      ],
       description: "Açık saha için dayanıklı beton uygulaması.",
       status: "completed",
       active: true,
@@ -65,6 +71,9 @@ export const defaultContent: CmsContent = {
       location: "Bursa",
       image:
         "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=85",
+      images: [
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=85",
+      ],
       description: "Konut projesinde daire içi şap uygulaması.",
       status: "completed",
       active: true,
@@ -76,6 +85,9 @@ export const defaultContent: CmsContent = {
       location: "Bursa ve çevresi",
       image:
         "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1000&q=85",
+      images: [
+        "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1000&q=85",
+      ],
       description:
         "Banyo, mutfak ve yaşam alanları için özenli fayans döşeme uygulaması.",
       status: "completed",

@@ -21,6 +21,7 @@ export function createEditorValues(
     category: item?.category ?? "",
     location: item?.location ?? "",
     image: item?.image ?? "",
+    images: item?.images ?? (item?.image ? [item.image] : []),
     description: item?.description ?? "",
     icon: item?.icon ?? "◉",
     status: item?.status ?? "completed",
