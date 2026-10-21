@@ -11,7 +11,7 @@ import {
   GlobalStyle,
   LoginCard,
   LoginWrap,
-  Mark,
+  LoginLogo,
   Submit,
 } from "@/features/admin/styles/admin-login.styles";
 
@@ -36,7 +36,7 @@ export default function AdminLogin() {
       <GlobalStyle />
       <LoginWrap>
         <LoginCard onSubmit={handleSubmit(login)}>
-          <Brand><Mark>DK</Mark><span>DURMAZ KARDEŞLER<small>GÜVENLİ YÖNETİCİ GİRİŞİ</small></span></Brand>
+          <Brand><LoginLogo src="/uploads/logo.svg" alt="Durmaz Kardeşler Yapı İnşaat" /><span>DURMAZ KARDEŞLER<small>GÜVENLİ YÖNETİCİ GİRİŞİ</small></span></Brand>
           <h1>Yönetim paneli</h1>
           <p>Devam etmek için yönetici parolanızı girin.</p>
           {error && <ErrorMessage role="alert">{error}</ErrorMessage>}

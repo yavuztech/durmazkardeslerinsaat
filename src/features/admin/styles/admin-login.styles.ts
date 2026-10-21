@@ -20,7 +20,7 @@ export const Brand = styled.div`
   display:flex;align-items:center;gap:11px;font:800 11px Manrope,sans-serif;letter-spacing:.06em;
   small{display:block;color:#718293;font:600 9px "DM Sans",sans-serif;letter-spacing:.18em;margin-top:4px}
 `;
-export const Mark = styled.span`width:40px;height:40px;background:#087bff;color:#fff;display:grid;place-items:center;font:800 14px Manrope,sans-serif;`;
+export const LoginLogo = styled.img`width:48px;height:48px;object-fit:contain;`;
 export const Submit = styled.button`
   width:100%;height:42px;margin-top:18px;border:1px solid #0056b3;background:#0056b3;
   color:#fff;font-size:11px;font-weight:700;cursor:pointer;

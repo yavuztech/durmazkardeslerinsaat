@@ -42,6 +42,26 @@ async function readContent(): Promise<CmsContent> {
       settings: {
         ...defaultContent.settings,
         ...saved.settings,
+        seo: {
+          ...defaultContent.settings.seo,
+          ...saved.settings?.seo,
+          home: {
+            ...defaultContent.settings.seo.home,
+            ...saved.settings?.seo?.home,
+          },
+          services: {
+            ...defaultContent.settings.seo.services,
+            ...saved.settings?.seo?.services,
+          },
+          projects: {
+            ...defaultContent.settings.seo.projects,
+            ...saved.settings?.seo?.projects,
+          },
+          about: {
+            ...defaultContent.settings.seo.about,
+            ...saved.settings?.seo?.about,
+          },
+        },
         pageContent: {
           ...defaultContent.settings.pageContent,
           ...saved.settings?.pageContent,

@@ -3,13 +3,14 @@ import { Fragment } from "react";
 import { serverApplication } from "@/composition/server-application";
 import { PublicPageShell } from "@/features/site/components/public-page-shell";
 import { ServicesSection } from "@/features/services/components/services-section";
-
-export const metadata: Metadata = {
-  title: "Hizmetlerimiz | Durmaz Kardeşler Yapı İnşaat",
-  description: "Bursa ve çevresinde daire içi şap, saha betonu ve inşaat hizmetlerimizi inceleyin.",
-};
+import { createPageMetadata } from "@/presentation/utils/seo-metadata";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const content = await serverApplication.getPublicContent();
+  return createPageMetadata("/hizmetlerimiz", content.settings.seo.services);
+}
 
 export default async function ServicesPage() {
   const content = await serverApplication.getPublicContent();

@@ -41,6 +41,12 @@ export function useAdminDashboard() {
       serviceArea: "",
       heroTitle: "",
       heroDescription: "",
+      seo: {
+        home: { title: "", description: "" },
+        services: { title: "", description: "" },
+        projects: { title: "", description: "" },
+        about: { title: "", description: "" },
+      },
       pageContent: {
         services: {
           sectionEyebrow: "",

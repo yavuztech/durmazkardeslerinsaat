@@ -63,6 +63,18 @@ export type SitePageContent = {
   };
 };
 
+export type PageSeo = {
+  title: string;
+  description: string;
+};
+
+export type SiteSeo = {
+  home: PageSeo;
+  services: PageSeo;
+  projects: PageSeo;
+  about: PageSeo;
+};
+
 export type SiteSettings = {
   logo: string;
   phone: string;
@@ -72,6 +84,7 @@ export type SiteSettings = {
   heroTitle: string;
   heroDescription: string;
   pageContent: SitePageContent;
+  seo: SiteSeo;
 };
 
 export type CmsContent = {

@@ -41,6 +41,8 @@ CMS state yönetimi Redux Toolkit ile feature içinde tutulur. `admin-thunks.ts`
 
 Kurumsal sitede eklenen özgün lacivert/mavi görsel tasarım `src/app/site-design.css` ve `site-overrides.css` içindedir; animasyonlarda hareket azaltma tercihi dikkate alınır. Ana sayfa CMS'teki hizmet ve proje kayıtlarını gösterir. Ziyaretçiler `/hizmetlerimiz`, `/projeler` ve `/hakkimizda` sayfalarına gezinme menüsünden ve ana sayfa bağlantılarından ulaşabilir.
 
+Public sayfaların SEO başlıkları ve arama açıklamaları CMS **Site Ayarları** bölümünden yönetilir. `/robots.txt` ve `/sitemap.xml` Next.js tarafından üretilir. Yayında Search Console'a `https://durmazkardeslerinsaat.com` domainini ekleyip sitemap'i `https://durmazkardeslerinsaat.com/sitemap.xml` adresinden göndermek gerekir. Canonical ve sitemap domain'i `src/presentation/utils/seo-metadata.ts` içinde yapılandırılmıştır.
+
 ### Yayın ortamı gereksinimleri
 
 CMS, Node.js sunucu ortamında yazılabilir `.data/site-content.json` dosyası ve görseller için yazılabilir `public/uploads/` dizini kullanır. Verilerin korunması için:

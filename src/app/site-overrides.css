@@ -142,8 +142,12 @@ h2 em {
   background-size: cover;
 }
 
+.project-photo {
+  height: 345px;
+}
+
 .project-featured .project-photo {
-  height: 365px;
+  height: 345px;
 }
 
 .project-description {
@@ -245,6 +249,7 @@ h2 em {
     padding: 0 8px;
   }
 
+  .project-photo,
   .project-featured .project-photo {
     height: clamp(260px, 70vw, 400px);
   }

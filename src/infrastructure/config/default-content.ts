@@ -92,6 +92,28 @@ export const defaultContent: CmsContent = {
     heroTitle: "Her yapının temeli sağlam olmalı.",
     heroDescription:
       "Şap betonu, saha betonu ve inşaat işlerinizde deneyimimizle yanınızdayız.",
+    seo: {
+      home: {
+        title: "Bursa Şap Betonu ve Saha Betonu | Durmaz Kardeşler",
+        description:
+          "Bursa ve çevresinde daire içi şap, saha betonu, fayans ve inşaat uygulamaları. Projeniz için Durmaz Kardeşler Yapı İnşaat'tan teklif alın.",
+      },
+      services: {
+        title: "Bursa Şap, Saha Betonu ve Fayans Hizmetleri",
+        description:
+          "Daire içi şap, saha betonu, fayans ve genel inşaat hizmetlerimizi inceleyin. Bursa ve çevre illerde projenize uygun çözüm için bize ulaşın.",
+      },
+      projects: {
+        title: "Tamamlanan Projeler | Durmaz Kardeşler Yapı İnşaat",
+        description:
+          "Bursa ve çevresinde tamamlanan şap, saha betonu, fayans ve inşaat projelerimizden örnekleri inceleyin.",
+      },
+      about: {
+        title: "Hakkımızda | Durmaz Kardeşler Yapı İnşaat",
+        description:
+          "Durmaz Kardeşler Yapı İnşaat'ın çalışma yaklaşımını, hizmet alanlarını ve Bursa'daki uygulama deneyimini tanıyın.",
+      },
+    },
     pageContent: {
       services: {
         sectionEyebrow: "HİZMETLERİMİZ",

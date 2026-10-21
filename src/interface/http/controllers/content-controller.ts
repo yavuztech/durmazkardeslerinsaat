@@ -51,7 +51,7 @@ function validItems<K extends Exclude<Collection, "settings">>(
     ids.add(item.id as string);
     if (collection === "projects" &&
       (!isBoundedText(item.title, 120, true) ||
-        !isBoundedText(item.category, 80, true) ||
+        !isBoundedText(item.category, 120, true) ||
         !isBoundedText(item.location, 100, true) ||
         !isBoundedText(item.description, 800, true) ||
         !validImage(item.image) ||
@@ -68,6 +68,14 @@ function validItems<K extends Exclude<Collection, "settings">>(
 
 function isSiteSettings(value: unknown): value is CmsContent["settings"] {
   if (!isRecord(value)) return false;
+  if (!isRecord(value.seo)) return false;
+  const seo = value.seo;
+  if (!["home", "services", "projects", "about"].every((page) => {
+    const metadata = seo[page];
+    return isRecord(metadata) &&
+      isBoundedText(metadata.title, 70, true) &&
+      isBoundedText(metadata.description, 170, true);
+  })) return false;
   if (!isRecord(value.pageContent)) return false;
   const pageContent = value.pageContent;
   if (

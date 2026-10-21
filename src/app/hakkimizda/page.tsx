@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { Fragment } from "react";
 import { PublicPageShell } from "@/features/site/components/public-page-shell";
 import { serverApplication } from "@/composition/server-application";
-
-export const metadata: Metadata = {
-  title: "Hakkımızda | Durmaz Kardeşler Yapı İnşaat",
-  description: "Durmaz Kardeşler Yapı İnşaat'ın çalışma yaklaşımını ve değerlerini tanıyın.",
-};
+import { createPageMetadata } from "@/presentation/utils/seo-metadata";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const content = await serverApplication.getPublicContent();
+  return createPageMetadata("/hakkimizda", content.settings.seo.about);
+}
 
 export default async function AboutPage() {
   const content = await serverApplication.getPublicContent();

@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
 import {
   ArcElement,
   CategoryScale,
@@ -32,6 +34,9 @@ import {
   Main,
   Modal,
   ModalActions,
+  MobileMenuBackdrop,
+  MobileMenuButton,
+  DrawerLogout,
   Navigation,
   Overlay,
   Panel,
@@ -66,6 +71,7 @@ export default function AdminDashboard() {
     weekCounts, newInquiryCount, refreshContent, logout, openEditor, saveEditor,
     deleteItem, uploadImage, updateInquiry, deleteInquiry, saveSettings,
   } = useAdminDashboard();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const current = adminSectionContent[section];
   const newInquiries = newInquiryCount;
   const projectCount = content?.projects.length ?? 0;
@@ -99,13 +105,35 @@ export default function AdminDashboard() {
       <Shell>
         <Layout>
           <Sidebar>
-            <SideLogo><BrandImage src={content?.settings.logo || "/logo.svg"} alt="" /><span>DURMAZ KARDEŞLER<small>İÇERİK YÖNETİMİ</small></span></SideLogo>
-            <Navigation aria-label="Yönetim menüsü">
+            <SideLogo>
+              <BrandImage src={content?.settings.logo || "/logo.svg"} alt="" />
+              <span>DURMAZ KARDEŞLER<small>İÇERİK YÖNETİMİ</small></span>
+              <MobileMenuButton
+                type="button"
+                aria-label={mobileMenuOpen ? "Menüyü kapat" : "Menüyü aç"}
+                aria-expanded={mobileMenuOpen}
+                aria-controls="admin-navigation"
+                onClick={() => setMobileMenuOpen((open) => !open)}
+              >
+                {mobileMenuOpen ? <X size={21} /> : <Menu size={21} />}
+              </MobileMenuButton>
+            </SideLogo>
+            {mobileMenuOpen && (
+              <MobileMenuBackdrop
+                type="button"
+                aria-label="Menüyü kapat"
+                onClick={() => setMobileMenuOpen(false)}
+              />
+            )}
+            <Navigation id="admin-navigation" $open={mobileMenuOpen} aria-label="Yönetim menüsü">
               {adminSections.map((item) => (
-                <button key={item.id} type="button" aria-current={section === item.id ? "page" : undefined} onClick={() => { setSection(item.id); setFeedback(""); }}>
+                <button key={item.id} type="button" aria-current={section === item.id ? "page" : undefined} onClick={() => { setSection(item.id); setFeedback(""); setMobileMenuOpen(false); }}>
                   <i>{item.icon}</i>{item.label}{item.id === "inquiries" && newInquiries > 0 ? ` · ${newInquiries}` : ""}
                 </button>
               ))}
+              <DrawerLogout type="button" onClick={() => void logout()}>
+                Güvenli çıkış <span aria-hidden="true">↗</span>
+              </DrawerLogout>
             </Navigation>
             <SidebarBottom>İçeriklerinizi yönetin.<br />Her değişiklik anında siteye yansır.</SidebarBottom>
           </Sidebar>
@@ -113,7 +141,7 @@ export default function AdminDashboard() {
           <Main>
             <Topbar><span>Durmaz Kardeşler Yapı İnşaat　/　{current.title}</span><Button $quiet type="button" onClick={() => void logout()}>Güvenli çıkış ↗</Button></Topbar>
             <Heading>
-              <div><Eyebrow>{current.eyebrow}</Eyebrow><h1>{current.title}</h1><p>{current.description}</p></div>
+              <div><h1>{current.title}</h1><p>{current.description}</p></div>
               {(section === "projects" || section === "services") && <Button type="button" onClick={() => openEditor(section)}>＋ Yeni {section === "projects" ? "proje" : "hizmet"} ekle</Button>}
               {section === "inquiries" && <Button $quiet type="button" disabled={loading} onClick={() => void refreshContent()}>{loading ? "Yükleniyor…" : "↻ Yenile"}</Button>}
             </Heading>
@@ -172,6 +200,19 @@ export default function AdminDashboard() {
                   </Panel>
                 </SettingGrid>
                 <SettingGrid>
+                  {([
+                    ["home", "Ana sayfa"],
+                    ["services", "Hizmetlerimiz"],
+                    ["projects", "Projeler"],
+                    ["about", "Hakkımızda"],
+                  ] as const).map(([page, label]) => (
+                    <Panel key={page}><header><h2>{label} SEO</h2></header>
+                      <Field $full>Google başlığı <span>(en fazla 70 karakter)</span><input maxLength={70} {...settingsForm.register(`seo.${page}.title`, { required: true, maxLength: 70 })} /></Field>
+                      <Field $full>Arama açıklaması <span>(en fazla 170 karakter)</span><textarea rows={3} maxLength={170} {...settingsForm.register(`seo.${page}.description`, { required: true, maxLength: 170 })} /></Field>
+                    </Panel>
+                  ))}
+                </SettingGrid>
+                <SettingGrid>
                   <Panel><header><h2>Hizmetlerimiz bölümü</h2></header>
                     <Field $full>Bölüm üst başlığı<input maxLength={60} {...settingsForm.register("pageContent.services.sectionEyebrow", { required: true, maxLength: 60 })} /></Field>
                     <Field $full>Bölüm başlığı <span>(satırları ayırmak için alt satır kullanın)</span><textarea rows={2} maxLength={180} {...settingsForm.register("pageContent.services.sectionTitle", { required: true, maxLength: 180 })} /></Field>
@@ -228,7 +269,15 @@ export default function AdminDashboard() {
                 <Field $full>Başlık<input {...editorForm.register("title", { required: "Başlık zorunludur.", maxLength: 120 })} /></Field>
                 {editor.type === "projects" ? (
                   <>
-                    <Field>Kategori<input {...editorForm.register("category", { required: true, maxLength: 80 })} placeholder="SAHA BETONU" /></Field>
+                    <Field>Kategori<select {...editorForm.register("category", { required: "Hizmet kategorisi seçin." })}>
+                      <option value="">Hizmet seçin</option>
+                      {editor.id && !content?.services.some((service) => service.title === editorForm.getValues("category")) && (
+                        <option value={editorForm.getValues("category")}>{editorForm.getValues("category")} (mevcut kategori)</option>
+                      )}
+                      {content?.services.map((service) => (
+                        <option key={service.id} value={service.title}>{service.title}</option>
+                      ))}
+                    </select></Field>
                     <Field>Konum<input {...editorForm.register("location", { required: true, maxLength: 100 })} placeholder="Bursa" /></Field>
                     <Field $full>Proje görseli <span>(JPG, PNG veya WebP · en fazla 4 MB)</span><input type="file" accept="image/jpeg,image/png,image/webp" disabled={uploading} onChange={(event) => void uploadImage(event.target.files?.[0])} /><input type="url" placeholder="veya görsel URL'si" {...editorForm.register("image", { required: "Proje görseli zorunludur." })} />{uploading && <span>Görsel yükleniyor…</span>}</Field>
                     <Field>Durum<select {...editorForm.register("status")}><option value="completed">Tamamlandı</option><option value="ongoing">Devam ediyor</option></select></Field>

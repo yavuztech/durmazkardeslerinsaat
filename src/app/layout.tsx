@@ -7,10 +7,19 @@ import "./site-overrides.css";
 import StyledComponentsRegistry from "./styled-components-registry";
 import { ClientApplicationProvider } from "@/composition/client-application-provider";
 import { businessInfo } from "@/application/config/business-info";
+import { siteOrigin } from "@/presentation/utils/seo-metadata";
 
 export const metadata: Metadata = {
-  title: `${businessInfo.name} | Bursa Şap ve Saha Betonu`,
-  description: businessInfo.description,
+  metadataBase: siteOrigin,
+  title: {
+    default: "Bursa Şap Betonu ve Saha Betonu | Durmaz Kardeşler Yapı İnşaat",
+    template: `%s | ${businessInfo.name}`,
+  },
+  description:
+    "Bursa ve çevresinde daire içi şap, saha betonu, fayans ve inşaat uygulamaları. Durmaz Kardeşler Yapı İnşaat'tan teklif alın.",
+  alternates: {
+    canonical: siteOrigin,
+  },
   keywords: [
     "Bursa şap betonu",
     "saha betonu",
@@ -19,9 +28,12 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: businessInfo.name,
-    description: businessInfo.description,
+    description:
+      "Bursa ve çevresinde daire içi şap, saha betonu, fayans ve inşaat uygulamaları.",
     locale: "tr_TR",
     type: "website",
+    siteName: businessInfo.name,
+    url: siteOrigin,
   },
 };
 
