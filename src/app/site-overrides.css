@@ -1,0 +1,251 @@
+:root {
+  --green-dark: var(--blue);
+  --green: var(--blue);
+}
+
+h1 em,
+h2 em {
+  color: var(--blue);
+  font-style: normal;
+}
+
+.eyebrow > .eyebrow-rule {
+  width: 27px;
+  height: 1px;
+}
+
+.text-link {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.site-header {
+  background: #e5e7eb;
+  color: #003366;
+  padding-inline: max(6.1%, calc((100vw - 1360px) / 2));
+}
+
+.site-header .main-nav a,
+.site-header .header-cta,
+.site-header .menu-toggle {
+  color: #0056b3;
+}
+
+.site-header .main-nav a:hover,
+.site-header .nav-contact-mobile {
+  color: #003f87;
+}
+
+.site-header .main-nav a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.site-header .header-cta {
+  min-height: 46px;
+  border: 1px solid #0056b3;
+  background: #0056b3;
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgb(0 86 179 / 22%);
+  transition: background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.site-header .header-cta:hover {
+  color: #fff;
+  border-color: #003f87;
+  background: #003f87;
+  box-shadow: 0 8px 22px rgb(0 63 135 / 30%);
+  transform: translateY(-1px);
+}
+
+.site-header .menu-toggle {
+  min-width: 44px;
+  min-height: 44px;
+  border-color: #0056b3;
+}
+
+.site-header .menu-toggle span {
+  background: #0056b3;
+}
+
+.site-header a:focus-visible,
+.site-header button:focus-visible,
+.footer a:focus-visible {
+  outline: 3px solid #0056b3;
+  outline-offset: 3px;
+}
+
+.header-inner {
+  width: min(1160px, 100%);
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 36px;
+  min-height: 88px;
+}
+
+.services-inner {
+  width: min(1220px, 100%);
+  margin-inline: auto;
+}
+
+.brand-image {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+
+.header-brand-image {
+  width: 66px;
+  height: 66px;
+  object-fit: contain;
+}
+
+.project-slider {
+  margin-inline: -10px;
+}
+
+.project-slider .slick-slide {
+  padding: 0 10px;
+}
+
+.project-slider .slick-prev,
+.project-slider .slick-next {
+  z-index: 3;
+  width: 36px;
+  height: 36px;
+  background: var(--navy);
+}
+
+.project-slider .slick-prev {
+  left: -7px;
+}
+
+.project-slider .slick-next {
+  right: -7px;
+}
+
+.project-slider .slick-prev::before,
+.project-slider .slick-next::before {
+  color: white;
+}
+
+.project-slider .slick-dots li button::before {
+  color: var(--blue);
+}
+
+.project-photo {
+  background-position: center;
+  background-size: cover;
+}
+
+.project-featured .project-photo {
+  height: 365px;
+}
+
+.project-description {
+  margin: 12px 0 0;
+}
+
+.site-footer {
+  background: #041e33;
+  color: white;
+  padding: 72px 0 25px;
+}
+
+.footer-contact-links {
+  display: grid;
+  gap: 13px;
+  margin-top: 16px;
+}
+
+.footer-contact-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #bdcbd6;
+  min-height: 40px;
+  font-size: 14px;
+}
+
+.footer-contact-links a:hover {
+  color: white;
+}
+
+.footer {
+  background: #041e33;
+}
+
+.footer-bottom {
+  font-size: 10px;
+  letter-spacing: 0.4px;
+  line-height: 1.6;
+}
+
+.detail-hero {
+  background: #eaf0f4;
+}
+
+.detail-cta {
+  background: var(--navy);
+}
+
+.about-values article > span {
+  color: var(--blue);
+}
+
+@media (max-width: 1050px) {
+  .site-header {
+    padding-inline: 4%;
+  }
+}
+
+@media (max-width: 760px) {
+  .site-header {
+    padding-inline: 5%;
+  }
+
+  .header-inner {
+    min-height: 72px;
+    gap: 12px;
+  }
+
+  .header-brand-image {
+    width: 54px;
+    height: 54px;
+  }
+
+  .site-header .main-nav {
+    background: #e5e7eb;
+    border-color: #cbd5e1;
+  }
+
+  .site-header .main-nav a {
+    border-color: #cbd5e1;
+  }
+
+  .site-header .main-nav a,
+  .site-header .nav-contact-mobile {
+    min-height: 48px;
+  }
+
+  .footer-bottom span:nth-child(2) {
+    display: block;
+  }
+
+  .footer-bottom {
+    gap: 10px;
+    font-size: 10px;
+  }
+
+  .project-slider .slick-slide {
+    padding: 0 8px;
+  }
+
+  .project-featured .project-photo {
+    height: clamp(260px, 70vw, 400px);
+  }
+}
